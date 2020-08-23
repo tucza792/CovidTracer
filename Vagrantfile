@@ -66,5 +66,13 @@ Vagrant.configure("2") do |config|
   config.vm.provision "shell", inline: <<-SHELL
     apt-get update
     apt-get install -y apache2
+    
+    # Change VM's webserver configuration to use the vagrant shared folder.
+    cp /vagrant/tracer-website.config /etc/apache2/sites-available/
+
+    # install Covid-tracer website configuration and disable default configuration
+    a2ensite tracer-website
+    a2dissite 000-default
+    service apache2 reload
   SHELL
 end
