@@ -1,0 +1,5 @@
+* text=auto
+
+# Ensure that these two files have linux file endings, in case of Vagrant being run on a windows machine.
+setup-database.sql text eol=lf
+tracer-website.conf text eol=lf 
