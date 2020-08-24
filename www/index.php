@@ -24,7 +24,7 @@
 			$fname = $_POST['fname'];
 			$lname = $_POST['lname'];
 			$email = $_POST['email'];
-			$time_of_visit = $_POST['time_of_visit'];
+			$time_of_visit = date("Y-m-d H:i:s",strtotime($_POST['time_of_visit']));
   
 			$q = $pdo->query("INSERT INTO contact VALUES ('$fname','$lname','$email','$time_of_visit')");
 			$q->fetch();
@@ -48,7 +48,7 @@
 			</tr>
 			<tr>
 				<td width = "100">Date and Time of Visit</td>
-				<td><input name = "time_of_visit" type = "text" id = "time_of_visit"></td>
+				<td><input name = "time_of_visit" type = "datetime-local" id = "time_of_visit"></td>
 			</tr>
 			<tr>
 				<td width = "100"> </td>
