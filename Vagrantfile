@@ -26,6 +26,20 @@ Vagrant.configure("2") do |config|
     SHELL
   end
 
+  config.vm.define "alertserver" do |alertserver|
+   alertserver.vm.hostname = "alertserver"
+   alertserver.vm.network "private_network", ip: "192.168.2.13"
+   alertserver.vm.network "public_network", use_dhcp_assigned_default_route: true
+
+    alertserver.vm.provision "shell", inline: <<-SHELL
+      apt-get update
+      apt-get install -y python
+
+      cp /vagrant/emailtest.py /
+      python /emailtest.py
+    SHELL
+  end
+
   config.vm.define "dbserver" do |dbserver|
     dbserver.vm.hostname = "dbserver"
     dbserver.vm.network "private_network", ip: "192.168.2.12"
@@ -64,6 +78,7 @@ Vagrant.configure("2") do |config|
       service mysql restart
     SHELL
   end
+  
   
 end
    

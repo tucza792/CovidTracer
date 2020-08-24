@@ -1,3 +1,4 @@
+#Sourced from https://steemit.com/coding/@crispychris89/how-to-setup-an-automatic-mysql-email-script
 import smtplib
 
 server = smtplib.SMTP('smtp.gmail.com', 587)
