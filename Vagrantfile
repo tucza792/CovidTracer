@@ -27,10 +27,8 @@ Vagrant.configure("2") do |config|
   end
 
   config.vm.define "alertserver" do |alertserver|
-   alertserver.vm.hostname = "alertserver"
-   alertserver.vm.network "private_network", ip: "192.168.2.13"
-   alertserver.vm.network "public_network", use_dhcp_assigned_default_route: true
-
+    alertserver.vm.hostname = "alertserver"
+    alertserver.vm.network "private_network", ip: "192.168.2.13"
     alertserver.vm.provision "shell", inline: <<-SHELL
       apt-get update
       apt-get install -y python
