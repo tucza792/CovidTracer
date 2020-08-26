@@ -5,7 +5,7 @@
 
 Vagrant.configure("2") do |config|
 
-  # Specify to use Ubuntu box
+  #Specify to use Ubuntu box
   config.vm.box = "ubuntu/xenial64"
 
   config.vm.define "webserver" do |webserver|
@@ -29,12 +29,37 @@ Vagrant.configure("2") do |config|
   config.vm.define "alertserver" do |alertserver|
     alertserver.vm.hostname = "alertserver"
     alertserver.vm.network "private_network", ip: "192.168.2.13"
+
     alertserver.vm.provision "shell", inline: <<-SHELL
       apt-get update
       apt-get install -y python
+      apt-get install -y python3-venv apache2
 
-      cp /vagrant/emailtest.py /
-      python /emailtest.py
+      # The following block of code is for building a python rest api and was created with reference to 
+      # https://medium.com/@thishantha17/build-a-simple-python-rest-api-with-apache2-gunicorn-and-flask-on-ubuntu-18-04-c9d47639139b
+      mkdir flask_rest
+      cd flask_rest
+      python3.5 -m venv flaskvenv
+      source flaskvenv/bin/activate
+      pip install flask
+      pip install gunicorn
+      cp /vagrant/app.py /home/vagrant/flask_rest/
+      cp /vagrant/wsgi.py /home/vagrant/flask_rest/
+      deactivate
+      cp /vagrant/gunicorn_config.py /home/vagrant/flask_rest/
+      cp /vagrant/flaskrest.service /etc/systemd/system/
+      systemctl start flaskrest.service
+      systemctl enable flaskrest.service
+      systemctl status flaskrest.service
+
+      cp /vagrant/flaskrest.conf /etc/apache2/sites-available/
+      a2ensite flaskrest.conf
+      a2dissite 000-default
+      a2enmod proxy_http
+      service apache2 reload
+
+     # cp /vagrant/emailtest.py /
+     # python /emailtest.py
     SHELL
   end
 
