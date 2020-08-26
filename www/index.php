@@ -28,7 +28,8 @@
   
 			$q = $pdo->query("INSERT INTO contact VALUES ('$fname','$lname','$email','$time_of_visit')");
 			$q->fetch();
-			  
+		  } else if(isset($_POST['alertbtn'])) {
+			$xml = file_get_contents('http://192.168.2.13/sendEmail');
 		  }
 		?>
 
@@ -61,7 +62,12 @@
 				<input name = "add" type = "submit" id = "add" value = "Add Visit">
 				</td>
 			</tr>
+			<tr>
+				<td width = "100"> </td>
+				<td> </td>
+			</tr>
 			</table>
+			<input type="submit" name="alertbtn" value="ALERT CONTACTS" />
         </form>
 
 		<p>Showing contents of contact table:</p>
