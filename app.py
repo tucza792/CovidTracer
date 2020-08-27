@@ -12,7 +12,8 @@ def sendEmail():
     server = smtplib.SMTP('smtp.gmail.com', 587)
     server.starttls()
     server.login("cosc349covidtracer@gmail.com", "88QAe5jEju")
-    msg = "Test!"
+    emails = []
+    msgs = []
 
     # enter your server IP address/domain name
     HOST = "192.168.2.12" # or "domain.com"
@@ -26,14 +27,19 @@ def sendEmail():
     db_connection = mysql.connect(host=HOST, database=DATABASE, user=USER, password=PASSWORD)
     cursor = db_connection.cursor()
 
-    query = ("SELECT email FROM contact")
+    query = ("SELECT fname, email, time_of_visit FROM contact")
     cursor.execute(query)
 
-    for email in cursor:
+    for (fname, email, time_of_visit) in cursor:
+        emails.append(email)
+        msgs.append("Subject: COVID-19 Tracer\nHi " + fname + ",\n\nYou were visited by someone who has tested positive for Covid-19 at: " + time_of_visit.strftime("%m/%d/%Y, %H:%M:%S") + "\n\nYou should isolate yourself immediately and get a Covid-19 test as soon as possible. \n\n(FYI: This is not a real alert, do not take this information seriously)")
+
+    for email, msg in zip(emails, msgs):
         server.sendmail("cosc349covidtracer@gmail.com", email, msg)
 
     server.quit()
-    return ("Emails sent")
+    cursor.close()
+    return "Emails sent"
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5000, debug=True)
