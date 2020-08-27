@@ -32,9 +32,8 @@ Vagrant.configure("2") do |config|
 
     alertserver.vm.provision "shell", inline: <<-SHELL
       apt-get update
-      apt-get install -y python
-      apt-get install -y python3-venv apache2
-
+      apt-get install -y python python3-venv apache2
+    
       # The following block of code is for building a python rest api and was created with reference to 
       # https://medium.com/@thishantha17/build-a-simple-python-rest-api-with-apache2-gunicorn-and-flask-on-ubuntu-18-04-c9d47639139b
       mkdir flask_rest
@@ -43,6 +42,8 @@ Vagrant.configure("2") do |config|
       source flaskvenv/bin/activate
       pip install flask
       pip install gunicorn
+      pip3 install mysql-connector-python
+
       cp /vagrant/app.py /home/vagrant/flask_rest/
       cp /vagrant/wsgi.py /home/vagrant/flask_rest/
       deactivate
