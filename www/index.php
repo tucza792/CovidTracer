@@ -1,13 +1,15 @@
 <!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML//EN">
 <html>
-	<head>
+        <head>
+	        <link rel="stylesheet" href="styles.css">
 		<title>Covid-19 Tracer</title>
 	</head>
-
+	
 	<body>
+	<div class="interface">
 		<h1>Covid-19 Tracer</h1>
 
-		<h2>Input visit details</h2>
+		<h3>Input visit details:</h3>
 
 		<?php
 
@@ -33,7 +35,7 @@
 		  }
 		?>
 
-		<form method = "post" action = "<?php $_PHP_SELF ?>">
+		<form method = "post" class="form" action = "<?php $_PHP_SELF ?>">
 			<table width = "400" border = "0" cellspacing = "1" cellpadding = "2">
 			<tr>
 				<td width = "100">First Name</td>
@@ -66,11 +68,15 @@
 				<td width = "100"> </td>
 				<td> </td>
 			</tr>
+			<tr>
+                                <td width = "100"> </td>
+                                <td> </td>
+                        </tr>
 			</table>
-			<input type="submit" name="alertbtn" value="ALERT CONTACTS" />
+			<div class="alertbutton"><input style="background-color: red;" type="submit" name="alertbtn" value="ALERT CONTACTS" /></div>
         </form>
 
-		<p>Showing contents of contact table:</p>
+		
 
 		<table border="2">
 		<tr><th>First Name</th><th>Last Name</th><th>Email Address</th><th>Date and Time of Visit</th></tr>
@@ -83,6 +89,7 @@
 		  }
 		  ?>
 		</table>
+	</div>
 	</body>
 
 </html>
