@@ -5,6 +5,6 @@ bind = 'unix:flaskrest.sock'
 umask = 0o007
 reload = True
 
-#logging
+# Logging
 accesslog = '-'
 errorlog = '-'

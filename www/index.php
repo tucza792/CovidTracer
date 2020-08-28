@@ -21,7 +21,7 @@
 		 $pdo_dsn = "mysql:host=$db_host;dbname=$db_name";
 		 $pdo = new PDO($pdo_dsn, $db_user, $db_passwd);
 		 
-
+		// If user submits contact information, send it to the dbserver
 		if(isset($_POST['add'])) {
 			$fname = $_POST['fname'];
 			$lname = $_POST['lname'];
@@ -30,11 +30,14 @@
   
 			$q = $pdo->query("INSERT INTO contact VALUES ('$fname','$lname','$email','$time_of_visit')");
 			$q->fetch();
+			
+			// If user presses 'Alert Contacts' button, trigger the REST API on alertserver to send emails out
 		  } else if(isset($_POST['alertbtn'])) {
 			$xml = file_get_contents('http://192.168.2.13/sendEmail');
 		  }
 		?>
 
+		<!-- Contact details form -->
 		<form method = "post" class="form" action = "<?php $_PHP_SELF ?>">
 			<table width = "400" border = "0" cellspacing = "1" cellpadding = "2">
 			<tr>
@@ -58,6 +61,7 @@
 				<td> </td>
 			</tr>
 
+		  	<!-- Button to submit contact details -->
 			<tr>
 				<td width = "100"> </td>
 				<td>
@@ -69,15 +73,17 @@
 				<td> </td>
 			</tr>
 			<tr>
-                                <td width = "100"> </td>
-                                <td> </td>
-                        </tr>
+                <td width = "100"> </td>
+                <td> </td>
+            </tr>
 			</table>
+
+			<!-- Button to alert contacts if user tests positive for Covid-19 -->
 			<div class="alertbutton"><input style="background-color: red;" type="submit" name="alertbtn" value="ALERT CONTACTS" /></div>
         </form>
 
 		
-
+		<!-- Table displaying details of all recent contacts -->
 		<table border="2">
 		<tr><th>First Name</th><th>Last Name</th><th>Email Address</th><th>Date and Time of Visit</th></tr>
 
