@@ -14,7 +14,7 @@
 		<?php
 
 		 $db_host = 'covid-tracer-db1.c3v1xy5xbrif.us-east-1.rds.amazonaws.com';
-		 $db_name = '3306';
+		 $db_port = '3306';
 		 $db_name = 'covidtracerdb1';
 		 $db_user = 'admin';
 		 $db_passwd = 'a1b2c3d4';
