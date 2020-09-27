@@ -17,11 +17,12 @@ def sendEmail():
     msgs = []
 
     # Establish connection with the dbserver
-    HOST = "192.168.2.12"
-    DATABASE = "fvision"
-    USER = "webuser"
-    PASSWORD = "insecure_db_pw"
-    db_connection = mysql.connect(host=HOST, database=DATABASE, user=USER, password=PASSWORD)
+    HOST = "covid-tracer-db1.c3v1xy5xbrif.us-east-1.rds.amazonaws.com"
+    PORT = "3306"
+    DATABASE = "covidtracerdb1"
+    USER = "admin"
+    PASSWORD = "a1b2c3d4"
+    db_connection = mysql.connect(host=HOST, port=PORT, database=DATABASE, user=USER, password=PASSWORD)
     cursor = db_connection.cursor()
 
     query = ("SELECT fname, email, time_of_visit FROM contact")
