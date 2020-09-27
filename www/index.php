@@ -13,14 +13,21 @@
 
 		<?php
 
-		 $db_host = '192.168.2.12';
-		 $db_name = 'fvision';
-		 $db_user = 'webuser';
-		 $db_passwd = 'insecure_db_pw';
+		 $db_host = 'covid-tracer-db1.c3v1xy5xbrif.us-east-1.rds.amazonaws.com';
+		 $db_name = '3306';
+		 $db_name = 'covidtracerdb1';
+		 $db_user = 'admin';
+		 $db_passwd = 'a1b2c3d4';
 
-		 $pdo_dsn = "mysql:host=$db_host;dbname=$db_name";
+		 $pdo_dsn = "mysql:host=$db_host;port=$db_port;dbname=$db_name";
 		 $pdo = new PDO($pdo_dsn, $db_user, $db_passwd);
 		 
+		 # Check if contact table already exists, if not then create it.
+         $q = $pdo->query("DESCRIBE contact");
+         if (empty($q)) {
+         	$q = $pdo->query("CREATE TABLE contact (fname VARCHAR(20) NOT NULL, lname VARCHAR(20) NOT NULL,email VARCHAR(50) PRIMARY KEY,time_of_visit DATETIME NOT NULL)");
+         }
+
 		// If user submits contact information, send it to the dbserver
 		if(isset($_POST['add'])) {
 			$fname = $_POST['fname'];
