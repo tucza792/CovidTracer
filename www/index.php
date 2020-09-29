@@ -41,7 +41,10 @@
 			// If user presses 'Alert Contacts' button, trigger the REST API on alertserver to send emails out
 		  } else if(isset($_POST['alertbtn'])) {
 			$xml = file_get_contents('http://10.0.0.97:5000/sendEmail');
-		  }
+		  }  else if (isset($_POST['clearbtn'])) {
+			$q = $pdo->query("DELETE FROM contact");
+			$q->fetch();
+	  	  }
 		?>
 
 		<!-- Contact details form -->
@@ -86,7 +89,10 @@
 			</table>
 
 			<!-- Button to alert contacts if user tests positive for Covid-19 -->
-			<div class="alertbutton"><input style="background-color: red;" type="submit" name="alertbtn" value="ALERT CONTACTS" /></div>
+			<div class="alertbutton">
+                <input style="background-color: red;" type="submit" name="alertbtn" value="ALERT CONTACTS" />
+                <input style="background-color: red;" type="submit" name="clearbtn" value="CLEAR CONTACTS" />
+            </div>
         </form>
 
 		
