@@ -26,22 +26,20 @@ Vagrant.configure("2") do |config|
 
     webserver.vm.provider :aws do |aws, override|
 
-      aws.access_key_id = "AKIAJDT2WZGOSJWFIG3A"
-      aws.secret_access_key = "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"
-
       aws.region = "us-east-1"
 
       override.nfs.functional = false
       override.vm.allowed_synced_folder_types = :rsync
 
-      aws.keypair_name = "cosc-349-pair"
-      override.ssh.private_key_path = "~/.ssh/cosc-349-pair.pem"
+      aws.keypair_name = "covid-tracer-pair"
+      override.ssh.private_key_path = "~/.ssh/covid-tracer-pair.pem"
 
       aws.instance_type = "t2.micro"
 
       aws.subnet_id = "subnet-0e5990a11fa2c0164"
       aws.security_groups = ["sg-0ba193dc35ffadc85"]
 
+      aws.private_ip_address = "10.0.0.98"
       aws.associate_public_ip = true
 
       aws.ami = "ami-0f40c8f97004632f9"
@@ -69,21 +67,18 @@ Vagrant.configure("2") do |config|
 
     alertserver.vm.provider :aws do |aws, override|
 
-      aws.access_key_id = "AKIAJDT2WZGOSJWFIG3A"
-      aws.secret_access_key = "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"
-
       aws.region = "us-east-1"
 
       override.nfs.functional = false
       override.vm.allowed_synced_folder_types = :rsync
 
-      aws.keypair_name = "cosc-349-pair"
-      override.ssh.private_key_path = "~/.ssh/cosc-349-pair.pem"
+      aws.keypair_name = "covid-tracer-pair"
+      override.ssh.private_key_path = "~/.ssh/covid-tracer-pair.pem"
 
       aws.instance_type = "t2.micro"
 
       aws.subnet_id = "subnet-0e5990a11fa2c0164"
-      aws.security_groups = ["sg-0ba193dc35ffadc85"]
+      aws.security_groups = ["sg-0d4e468e70837822c"]
 
       aws.private_ip_address = "10.0.0.97"
       aws.associate_public_ip = true
