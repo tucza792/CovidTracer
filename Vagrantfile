@@ -22,6 +22,7 @@ Vagrant.configure("2") do |config|
   config.vm.define "webserver" do |webserver|
     webserver.vm.hostname = "webserver"
 
+    # AWS settings for webserver EC2 instance
     webserver.vm.provider :aws do |aws, override|
 
       aws.region = "us-east-1"
@@ -45,6 +46,7 @@ Vagrant.configure("2") do |config|
       override.ssh.username = "ubuntu"
     end
 
+    # Once EC2 instance is built, run these shell commands
     webserver.vm.provision "shell", inline: <<-SHELL
       apt-get update
       apt-get install -y apache2 php libapache2-mod-php php-mysql
@@ -61,6 +63,7 @@ Vagrant.configure("2") do |config|
   config.vm.define "alertserver" do |alertserver|
     alertserver.vm.hostname = "alertserver"
 
+    # AWS settings for alertserver EC2 instance
     alertserver.vm.provider :aws do |aws, override|
 
       aws.region = "us-east-1"
@@ -84,6 +87,7 @@ Vagrant.configure("2") do |config|
       override.ssh.username = "ubuntu"
     end
 
+    # Once EC2 instance is built, run these shell commands
     alertserver.vm.provision "shell", inline: <<-SHELL
       apt-get update
       apt-get install -y python python3-venv apache2

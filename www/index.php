@@ -12,7 +12,7 @@
 		<h3>Input visit details:</h3>
 
 		<?php
-
+		 # RDS Database information
 		 $db_host = 'covid-tracer-db-instance.c3v1xy5xbrif.us-east-1.rds.amazonaws.com';
 		 $db_port = '3306';
 		 $db_name = 'sample';
@@ -41,6 +41,7 @@
 			// If user presses 'Alert Contacts' button, trigger the REST API on alertserver to send emails out
 		  } else if(isset($_POST['alertbtn'])) {
 			$xml = file_get_contents('http://10.0.0.97:5000/sendEmail');
+			// If user presses 'Clear Contacts' button, delete all rows from the contact table
 		  }  else if (isset($_POST['clearbtn'])) {
 			$q = $pdo->query("DELETE FROM contact");
 			$q->fetch();
@@ -88,9 +89,11 @@
             </tr>
 			</table>
 
-			<!-- Button to alert contacts if user tests positive for Covid-19 -->
+			
 			<div class="alertbutton">
+				<!-- Button to alert contacts if user tests positive for Covid-19 -->
                 <input style="background-color: red;" type="submit" name="alertbtn" value="ALERT CONTACTS" />
+				<!-- Button to delete all contacts in the table -->
                 <input style="background-color: red;" type="submit" name="clearbtn" value="CLEAR CONTACTS" />
             </div>
         </form>

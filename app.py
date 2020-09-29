@@ -16,7 +16,7 @@ def sendEmail():
     emails = []
     msgs = []
 
-    # Establish connection with the dbserver
+    # Establish connection with the RDS database
     HOST = "covid-tracer-db-instance.c3v1xy5xbrif.us-east-1.rds.amazonaws.com"
     PORT = "3306"
     DATABASE = "sample"
