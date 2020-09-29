@@ -21,8 +21,6 @@ Vagrant.configure("2") do |config|
 
   config.vm.define "webserver" do |webserver|
     webserver.vm.hostname = "webserver"
-    #webserver.vm.network "forwarded_port", guest: 80, host: 8080, host_ip: "127.0.0.1"
-    #webserver.vm.synced_folder ".", "/vagrant", owner: "vagrant", group: "vagrant", mount_options: ["dmode=775,fmode=777"]
 
     webserver.vm.provider :aws do |aws, override|
 
@@ -62,8 +60,6 @@ Vagrant.configure("2") do |config|
 
   config.vm.define "alertserver" do |alertserver|
     alertserver.vm.hostname = "alertserver"
-    #alertserver.vm.network "private_network", ip: "192.168.2.13"
-    #alertserver.vm.synced_folder ".", "/vagrant", owner: "vagrant", group: "vagrant", mount_options: ["dmode=775,fmode=777"]
 
     alertserver.vm.provider :aws do |aws, override|
 
@@ -109,25 +105,9 @@ Vagrant.configure("2") do |config|
       # Copy app.py and wsgi.py into the REST API's folder
       mv /vagrant/app.py /home/ubuntu/flask_rest/app.py
       python app.py
-      #mv /vagrant/wsgi.py /home/ubuntu/flask_rest/wsgi.py
       
       # Deactivate python virtual environment
       deactivate 
-
-
-      #mv /vagrant/gunicorn_config.py /home/ubuntu/flask_rest/gunicorn_config.py
-      #mv /vagrant/flaskrest.service /etc/systemd/system/flaskrest.service
-
-      # Start the REST API
-      #systemctl start flaskrest.service
-      #systemctl enable flaskrest.service
-      
-      # Start the webserver for the REST API
-      #mv /vagrant/flaskrest.conf /etc/apache2/sites-available/flaskrest.conf
-      #a2ensite flaskrest.conf
-      #a2dissite 000-default
-      #a2enmod proxy_http
-      #service apache2 reload
     SHELL
   end
 
