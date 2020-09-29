@@ -17,9 +17,9 @@ def sendEmail():
     msgs = []
 
     # Establish connection with the dbserver
-    HOST = "covid-tracer-db1.c3v1xy5xbrif.us-east-1.rds.amazonaws.com"
+    HOST = "covid-tracer-db-instance.c3v1xy5xbrif.us-east-1.rds.amazonaws.com"
     PORT = "3306"
-    DATABASE = "covidtracerdb1"
+    DATABASE = "sample"
     USER = "admin"
     PASSWORD = "a1b2c3d4"
     db_connection = mysql.connect(host=HOST, port=PORT, database=DATABASE, user=USER, password=PASSWORD)

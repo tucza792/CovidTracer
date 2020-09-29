@@ -13,9 +13,9 @@
 
 		<?php
 
-		 $db_host = 'covid-tracer-db1.c3v1xy5xbrif.us-east-1.rds.amazonaws.com';
+		 $db_host = 'covid-tracer-db-instance.c3v1xy5xbrif.us-east-1.rds.amazonaws.com';
 		 $db_port = '3306';
-		 $db_name = 'covidtracerdb1';
+		 $db_name = 'sample';
 		 $db_user = 'admin';
 		 $db_passwd = 'a1b2c3d4';
 
@@ -40,7 +40,7 @@
 			
 			// If user presses 'Alert Contacts' button, trigger the REST API on alertserver to send emails out
 		  } else if(isset($_POST['alertbtn'])) {
-			$xml = file_get_contents('http://192.168.2.13/sendEmail');
+			$xml = file_get_contents('http://10.0.0.97:5000/sendEmail');
 		  }
 		?>
 

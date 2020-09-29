@@ -1,18 +1,53 @@
 # -*- mode: ruby -*-
 # vi: set ft=ruby :
 
+class Hash
+  def slice(*keep_keys)
+    h = {}
+    keep_keys.each { |key| h[key] = fetch(key) if has_key?(key) }
+    h
+  end unless Hash.method_defined?(:slice)
+  def except(*less_keys)
+    slice(*keys - less_keys)
+  end unless Hash.method_defined?(:except)
+end
+
 # This Vagrantfile was configured with strong inspiration from David Eyers' Vagrant file at https://altitude.otago.ac.nz/cosc349/vagrant-multivm/-/blob/master/Vagrantfile  
 
 Vagrant.configure("2") do |config|
 
-  #Specify to use Ubuntu box
-  config.vm.box = "ubuntu/xenial64"
+  #Specify to use dummy box
+  config.vm.box = "dummy"
 
   config.vm.define "webserver" do |webserver|
     webserver.vm.hostname = "webserver"
-    webserver.vm.network "forwarded_port", guest: 80, host: 8080, host_ip: "127.0.0.1"
-    webserver.vm.synced_folder ".", "/vagrant", owner: "vagrant", group: "vagrant", mount_options: ["dmode=775,fmode=777"]
+    #webserver.vm.network "forwarded_port", guest: 80, host: 8080, host_ip: "127.0.0.1"
+    #webserver.vm.synced_folder ".", "/vagrant", owner: "vagrant", group: "vagrant", mount_options: ["dmode=775,fmode=777"]
 
+    webserver.vm.provider :aws do |aws, override|
+
+      aws.access_key_id = "AKIAJDT2WZGOSJWFIG3A"
+      aws.secret_access_key = "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"
+
+      aws.region = "us-east-1"
+
+      override.nfs.functional = false
+      override.vm.allowed_synced_folder_types = :rsync
+
+      aws.keypair_name = "cosc-349-pair"
+      override.ssh.private_key_path = "~/.ssh/cosc-349-pair.pem"
+
+      aws.instance_type = "t2.micro"
+
+      aws.subnet_id = "subnet-0e5990a11fa2c0164"
+      aws.security_groups = ["sg-0ba193dc35ffadc85"]
+
+      aws.associate_public_ip = true
+
+      aws.ami = "ami-0f40c8f97004632f9"
+
+      override.ssh.username = "ubuntu"
+    end
 
     webserver.vm.provision "shell", inline: <<-SHELL
       apt-get update
@@ -29,8 +64,34 @@ Vagrant.configure("2") do |config|
 
   config.vm.define "alertserver" do |alertserver|
     alertserver.vm.hostname = "alertserver"
-    alertserver.vm.network "private_network", ip: "192.168.2.13"
-    alertserver.vm.synced_folder ".", "/vagrant", owner: "vagrant", group: "vagrant", mount_options: ["dmode=775,fmode=777"]
+    #alertserver.vm.network "private_network", ip: "192.168.2.13"
+    #alertserver.vm.synced_folder ".", "/vagrant", owner: "vagrant", group: "vagrant", mount_options: ["dmode=775,fmode=777"]
+
+    alertserver.vm.provider :aws do |aws, override|
+
+      aws.access_key_id = "AKIAJDT2WZGOSJWFIG3A"
+      aws.secret_access_key = "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"
+
+      aws.region = "us-east-1"
+
+      override.nfs.functional = false
+      override.vm.allowed_synced_folder_types = :rsync
+
+      aws.keypair_name = "cosc-349-pair"
+      override.ssh.private_key_path = "~/.ssh/cosc-349-pair.pem"
+
+      aws.instance_type = "t2.micro"
+
+      aws.subnet_id = "subnet-0e5990a11fa2c0164"
+      aws.security_groups = ["sg-0ba193dc35ffadc85"]
+
+      aws.private_ip_address = "10.0.0.97"
+      aws.associate_public_ip = true
+
+      aws.ami = "ami-0f40c8f97004632f9"
+
+      override.ssh.username = "ubuntu"
+    end
 
     alertserver.vm.provision "shell", inline: <<-SHELL
       apt-get update
@@ -51,26 +112,27 @@ Vagrant.configure("2") do |config|
       pip3 install mysql-connector-python
 
       # Copy app.py and wsgi.py into the REST API's folder
-      cp /vagrant/app.py /home/vagrant/flask_rest/
-      cp /vagrant/wsgi.py /home/vagrant/flask_rest/
+      mv /vagrant/app.py /home/ubuntu/flask_rest/app.py
+      python app.py
+      #mv /vagrant/wsgi.py /home/ubuntu/flask_rest/wsgi.py
       
       # Deactivate python virtual environment
       deactivate 
 
 
-      cp /vagrant/gunicorn_config.py /home/vagrant/flask_rest/
-      cp /vagrant/flaskrest.service /etc/systemd/system/
+      #mv /vagrant/gunicorn_config.py /home/ubuntu/flask_rest/gunicorn_config.py
+      #mv /vagrant/flaskrest.service /etc/systemd/system/flaskrest.service
 
       # Start the REST API
-      systemctl start flaskrest.service
-      systemctl enable flaskrest.service
+      #systemctl start flaskrest.service
+      #systemctl enable flaskrest.service
       
       # Start the webserver for the REST API
-      cp /vagrant/flaskrest.conf /etc/apache2/sites-available/
-      a2ensite flaskrest.conf
-      a2dissite 000-default
-      a2enmod proxy_http
-      service apache2 reload
+      #mv /vagrant/flaskrest.conf /etc/apache2/sites-available/flaskrest.conf
+      #a2ensite flaskrest.conf
+      #a2dissite 000-default
+      #a2enmod proxy_http
+      #service apache2 reload
     SHELL
   end
 
